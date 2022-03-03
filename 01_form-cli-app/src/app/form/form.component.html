@@ -14,7 +14,6 @@
               name="name"
               id="inputName"
               #name = "ngModel"
-              placeholder="Name"
               required>
           </div>
 
@@ -28,14 +27,13 @@
               id="inputEmail"
               #email = "ngModel"
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-              placeholder="Email"
               required>
           </div>
 
           <!-- Error Email -->
           <div *ngIf="email.invalid && (email.dirty || email.touched)"class="alert alert-danger">
             <div *ngIf = "email.errors?.['pattern'] && email.touched">
-              Email is not right
+              Email not valid
             </div>
             <div *ngIf = "email.errors?.['required']">
                 Email field can't be blank
@@ -50,10 +48,19 @@
                 type="password"
                 [(ngModel)]="user.password.pwd"
                 name="pwd"
-                placeholder="Password"
                 minlength="8"
                 required>
             </div>
+
+            <!-- Error Password -->
+            <div *ngIf="(
+            userPassword.invalid
+            || userPassword.touched"
+            class="alert alert-danger">
+            <div *ngIf = "userPassword.invalid; else nomatch">
+                Password min 8 characters
+            </div>
+          </div>
 
             <div class="form-group">
               <label for="confirmPassword">Confirm Password</label>
@@ -61,20 +68,16 @@
                 type="password"
                 [(ngModel)]="user.password.confirmPwd"
                 name="confirmPwd"
-                placeholder="Confirm Password"
                 required>
             </div>
           </div>
 
-          <!-- Error Password -->
+          <!-- Error Confirm Password -->
           <div *ngIf="(
             userPassword.invalid
             || userPassword.value?.pwd != userPassword.value?.confirmPwd)
             && (userPassword.touched)"
             class="alert alert-danger">
-            <div *ngIf = "userPassword.invalid; else nomatch">
-                Password min 8 characters
-            </div>
             <ng-template #nomatch >
                 Passwords don't match
             </ng-template>
@@ -100,7 +103,7 @@
                 [(ngModel)]="user.terms"
                 name="terms"
                 required>
-                Confirm the Terms and Conditions
+                Valid Terms and Conditions
             </label>
           </div>
 
