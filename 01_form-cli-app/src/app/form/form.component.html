@@ -1,0 +1,121 @@
+<div class="container h-100">
+  <div class="row h-100 justify-content-center">
+    <div class="col-10 col-md-8 col-lg-6">
+      <form class="form" #myForm="ngForm" novalidate (ngSubmit)="onFormSubmit(myForm)">
+        <fieldset>
+        <legend>Sign Up Form</legend>
+
+          <!--- Name --->
+          <div class="form-group">
+            <label for="inputName">Name</label>
+            <input
+              type="text"
+              [(ngModel)]="user.name"
+              name="name"
+              id="inputName"
+              #name = "ngModel"
+              placeholder="Name"
+              required>
+          </div>
+
+          <!--- Email --->
+          <div class="form-group">
+            <label for="inputEmail">Email</label>
+            <input
+              type="text"
+              [(ngModel)]="user.email"
+              name="email"
+              id="inputEmail"
+              #email = "ngModel"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+              placeholder="Email"
+              required>
+          </div>
+
+          <!-- Error Email -->
+          <div *ngIf="email.invalid && (email.dirty || email.touched)"class="alert alert-danger">
+            <div *ngIf = "email.errors?.['pattern'] && email.touched">
+              Email is not right
+            </div>
+            <div *ngIf = "email.errors?.['required']">
+                Email field can't be blank
+            </div>
+          </div>
+
+          <!--- Password --->
+          <div ngModelGroup="password" #userPassword="ngModelGroup" required>
+            <div class="form-group">
+              <label for="inputPassword">Password</label>
+              <input
+                type="password"
+                [(ngModel)]="user.password.pwd"
+                name="pwd"
+                placeholder="Password"
+                minlength="8"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input
+                type="password"
+                [(ngModel)]="user.password.confirmPwd"
+                name="confirmPwd"
+                placeholder="Confirm Password"
+                required>
+            </div>
+          </div>
+
+          <!-- Error Password -->
+          <div *ngIf="(
+            userPassword.invalid
+            || userPassword.value?.pwd != userPassword.value?.confirmPwd)
+            && (userPassword.touched)"
+            class="alert alert-danger">
+            <div *ngIf = "userPassword.invalid; else nomatch">
+                Password min 8 characters
+            </div>
+            <ng-template #nomatch >
+                Passwords don't match
+            </ng-template>
+          </div>
+
+          <!---  Gender --->
+          <div class="form-group">
+            <label for="select">Gender</label>
+              <select
+                id="select"
+                [(ngModel)]="user.gender"
+                name="gender"
+                required>
+                <option *ngFor="let g of gender" [value]="g">{{g}}</option>
+              </select>
+          </div>
+
+          <!--- Terms and conditions --->
+          <div class="form-group checkbox">
+            <label>
+              <input
+                type="checkbox"
+                [(ngModel)]="user.terms"
+                name="terms"
+                required>
+                Confirm the Terms and Conditions
+            </label>
+          </div>
+
+          <!--- Buttons --->
+          <div class="form-group">
+              <button type="submit" class="btn btn-light" [disabled]="!myForm.form.valid">Submit</button>
+              <button type="reset" class="btn btn-dark">Cancel</button>
+          </div>
+        </fieldset>
+      </form>
+      <div id="json">
+        {{user | json}}
+      </div>
+    </div>
+  </div>
+</div>
+
+
